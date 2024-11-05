@@ -1,0 +1,73 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+bool solution_found = false;
+
+void print(int **board,int n){
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            if(board[i][j])
+                cout<<"Q ";
+            else{
+                cout<<". ";
+            }
+        }
+        cout<<endl;
+    }
+}
+bool isSafe(int **board,int n,int row, int col){
+    for(int i = 0;i<col;i++){
+        if(board[row][i])
+            return false;
+    }
+    for(int i = row,j=col;i>=0 && j>=0;i--,j--){
+        if(board[i][j])
+            return false;
+    }
+    for(int i = row,j=col;i<n && j>=0;i++,j--){
+        if(board[i][j])
+            return false;
+    }
+    return true;
+}
+void n_queen(int **board,int n,int currentCol){
+    if(solution_found)
+        return;
+    if(currentCol >= n)
+    {
+        print(board,n);
+        solution_found = true;
+        return;
+    }
+        
+    for(int i=0;i<n;i++){
+        if(isSafe(board,n,i,currentCol)){
+            board[i][currentCol] = 1;
+            n_queen(board,n,currentCol+1);
+            board[i][currentCol] = 0;
+        }
+    }
+
+}
+int main(){
+    int n;
+    cout<<"Enter the number of queens : ";
+    cin>>n;
+
+    int **board = new int *[n];
+    for(int i = 0;i<n;i++){
+        board[i] = new int[n]();
+
+    }
+    int row,col;
+    cout<<"enter the position where first queen should be placed : ";
+    cin>>row>>col;
+    board[row][col] = 1;
+    n_queen(board,n,1);
+    if(!solution_found){
+        cout<<"solution not found";
+    }
+    return 0;
+}
